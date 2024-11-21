@@ -21,9 +21,11 @@ def calculate_alpha(iteration, test_array):
 
     alpha = 0
     m,n = test_array.shape
-    for i in range(m - iteration):
-        #print(test_array[i + iteration][iteration - 1])
-        alpha += test_array[i + iteration][iteration - 1] ** 2
+    for i in range(m):
+        if i - iteration  < 0:
+            alpha += 0
+        else:
+            alpha += test_array[i][iteration - 1] ** 2
     
     if test_array[iteration][iteration -1] >= 0:
         alpha = -1 * (alpha ** (0.5))
@@ -35,6 +37,7 @@ def calculate_alpha(iteration, test_array):
 def calculate_r(iteration,test_array):
     alpha = calculate_alpha(iteration, test_array)
     r = (0.5*( alpha**2 - test_array[iteration][iteration -1]*alpha  ))** (0.5)
+    #print(r)
     return r
 
 def generate_household_vector(iteration,test_array):
@@ -50,10 +53,29 @@ def generate_household_vector(iteration,test_array):
         else:
             vector.append( (test_array[i][iteration - 1])/ (2 * r))
     
-    return vector
+    #print(vector)
+    return np.array(vector)
 
         
         
+def generate_householder_matrix(iteration, test_array):
+    m,n = test_array.shape
+    identity = np.identity(m)
+    vector = generate_household_vector(iteration, test_array)
+    vect_tran = np.transpose(vector)
+    v_vt = np.outer(vector,vect_tran)
+    #print(v_vt)
+    return identity - 2 * v_vt
+    
+    
+
+house_1 = generate_householder_matrix(1,test_array1)
+#print(house_1)
+a1_matrix = house_1 @ test_array1 @ house_1
+print("After first iteration of Householder Method:\n",a1_matrix,"\n")
+
+house_2  = generate_householder_matrix(2,a1_matrix)
+a2_matrix = house_2 @ a1_matrix @ house_2
+print("After second iteration of Householder Method:\n",a2_matrix,"\n")
 
 
-print(generate_household_vector(1,test_array2))
