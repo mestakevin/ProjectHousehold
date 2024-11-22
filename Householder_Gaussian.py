@@ -4,6 +4,24 @@ import numpy as np
 np.random.seed(12345)
 
 ##----------------------------------------------##
+def generate_symmetric_matrix(n):
+    """
+    Generates a random symmetric matrix of size n x n.
+
+    Parameters:
+        n (int): The size of the matrix.
+
+    Returns:
+        symmetric_matrix (ndarray): The generated symmetric matrix.
+    """
+    # Generate a random matrix of integers
+    random_matrix = np.random.randint(1, 10, size=(n, n))
+    
+    # Make the matrix symmetric by averaging it with its transpose
+    symmetric_matrix = (random_matrix + random_matrix.T) // 2  # Integer division for symmetric integer matrix
+    
+    return symmetric_matrix
+##----------------------------------------------##
 def householder_transformation(matrix):
     """
     Diagonalizes a symmetric matrix using Householder transformations.
@@ -42,23 +60,18 @@ def householder_transformation(matrix):
     # Ensure the matrix is tridiagonal
     return enforce_tridiagonal(tridiagonal)
 ##----------------------------------------------##
-def generate_symmetric_matrix(n):
+# Ensure the matrix is tridiagonal by zeroing out small values
+def enforce_tridiagonal(matrix):
     """
-    Generates a random symmetric matrix of size n x n.
-
-    Parameters:
-        n (int): The size of the matrix.
-
-    Returns:
-        symmetric_matrix (ndarray): The generated symmetric matrix.
+    Converts a matrix to tridiagonal form by zeroing out elements
+    that are not on the main diagonal or immediate off-diagonals.
     """
-    # Generate a random matrix of integers
-    random_matrix = np.random.randint(1, 10, size=(n, n))
-    
-    # Make the matrix symmetric by averaging it with its transpose
-    symmetric_matrix = (random_matrix + random_matrix.T) // 2  # Integer division for symmetric integer matrix
-    
-    return symmetric_matrix
+    n = matrix.shape[0]  # Get the size of the matrix
+    for i in range(n):
+        for j in range(n):
+            if abs(i - j) > 1:  # If not on the main or immediate off-diagonals
+                matrix[i, j] = 0.0  # Set the element to zero
+    return matrix
 ##----------------------------------------------##
 def main():
     """
