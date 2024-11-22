@@ -115,6 +115,20 @@ def gauss_elim(mat):
                 tran_mat[k, f] = 0.0
     return tran_mat
 ##----------------------------------------------##
+def calculate_eigenvalues(diagonalized_matrix):
+    """
+    Extracts eigenvalues from a diagonalized matrix.
+
+    Parameters:
+        diagonalized_matrix (ndarray): The diagonalized matrix.
+
+    Returns:
+        eigenvalues (ndarray): The eigenvalues of the matrix.
+    """
+    # Extract the diagonal elements as the eigenvalues
+    eigenvalues = np.diagonal(diagonalized_matrix)
+    return eigenvalues
+##----------------------------------------------##
 def main():
     """
     Main function to demonstrate matrix tridiagonalization and diagonalization.
@@ -129,5 +143,16 @@ def main():
     tridiagonal_matrix = householder_transformation(symmetric_matrix)  # Apply Householder transformation
     print(tridiagonal_matrix)
     print()
+
+    print("Diagonalized matrix by Gaussian elimination")
+    diagonalized_matrix = gauss_elim(tridiagonal_matrix)  # Perform Gaussian elimination
+    print(diagonalized_matrix)
+
+    if diagonalized_matrix is not None:
+        print("Eigenvalues of the matrix")
+        eigenvalues = calculate_eigenvalues(diagonalized_matrix)  # Compute eigenvalues
+        print(eigenvalues)
+    else:
+        print("Matrix could not be diagonalized.")
 ##----------------------------------------------##
 main()
