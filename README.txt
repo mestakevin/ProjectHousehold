@@ -16,7 +16,7 @@ The script is modular, ensuring each function serves a specific purpose, making 
 - Handles edge cases for numerical stability.
 
 ## Files
-- **matrix_operations.py**: Contains all functions and the main script logic.
+- **Householder_Gaussian.py**: Contains all functions and the main script logic.
 
 
 ## Getting Started
