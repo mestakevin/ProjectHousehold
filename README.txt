@@ -1,4 +1,4 @@
-# Matrix Diagonalization with Householder Transformation and Gaussian Elimination
+# Eigenvalues Calculations by Matrix Diagonalization with Householder Transformation and Gaussian Elimination
 
 ## Description
 
