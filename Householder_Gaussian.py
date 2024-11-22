@@ -3,7 +3,44 @@ import numpy as np
 # Set a seed for reproducibility in random number generation
 np.random.seed(12345)
 
+##----------------------------------------------##
+def householder_transformation(matrix):
+    """
+    Diagonalizes a symmetric matrix using Householder transformations.
 
+    Parameters:
+        matrix (ndarray): The symmetric matrix to be diagonalized.
+
+    Returns:
+        tridiagonal (ndarray): The tridiagonal matrix after applying Householder transformations.
+    """
+    # Ensure the input matrix is symmetric
+    if not np.allclose(matrix, matrix.T):
+        raise ValueError("Matrix must be symmetric!")
+
+    n = matrix.shape[0]  # Get the size of the matrix
+    tridiagonal = matrix.copy()  # Create a copy to preserve the original matrix
+
+    # Perform the Householder transformations
+    for k in range(n - 2):
+        # Extract the vector x from the column below the diagonal
+        x = tridiagonal[k+1:, k]
+        
+        # Compute the norm of x and construct the Householder reflection vector
+        norm_x = np.linalg.norm(x)
+        v = x.astype(float)  # Convert x to float to prevent integer overflow
+        v[0] += np.sign(x[0]) * norm_x  # Adjust the first component
+        v /= np.linalg.norm(v)  # Normalize the reflection vector
+
+        # Construct the Householder matrix
+        Hk = np.eye(n)  # Start with the identity matrix
+        Hk[k+1:, k+1:] -= 2.0 * np.outer(v, v)  # Apply the Householder transformation
+
+        # Update the matrix with the transformation
+        tridiagonal = Hk @ tridiagonal @ Hk.T
+
+    # Ensure the matrix is tridiagonal
+    return enforce_tridiagonal(tridiagonal)
 ##----------------------------------------------##
 def generate_symmetric_matrix(n):
     """
