@@ -73,6 +73,48 @@ def enforce_tridiagonal(matrix):
                 matrix[i, j] = 0.0  # Set the element to zero
     return matrix
 ##----------------------------------------------##
+def gauss_elim(mat):
+    """
+    Performs Gaussian elimination to diagonalize a matrix.
+
+    Parameters:
+        mat (ndarray): The input matrix.
+
+    Returns:
+        None (prints the diagonalized matrix if successful).
+    """
+    n = len(mat[0])  # Get the size of the matrix
+    i = 0  # Row index for forward elimination
+    # Forward elimination process
+    for current_row, next_row in zip(mat, mat[1:]):
+        # Check if the current row equals the last row (degenerate case)
+        if all(a == b for a, b in zip(current_row, mat[-1])):
+            return None  # Terminate if a degenerate row is found
+        else:
+            c = -(next_row[i] / current_row[i])  # Compute the scaling factor
+            row_b = next_row + (c * current_row)  # Update the next row
+            mat[i+1] = row_b
+        i += 1
+
+    # Transpose the matrix for backward elimination
+    tran_mat = mat.T
+    j = 0  # Column index for backward elimination
+    for current_row, next_row in zip(tran_mat, tran_mat[1:]):
+        if all(a == b for a, b in zip(current_row, tran_mat[-1])):
+            return None  # Terminate if a degenerate column is found
+        else:
+            c = -(next_row[j] / current_row[j])  # Compute the scaling factor
+            row_b = next_row + (c * current_row)  # Update the next column
+            tran_mat[j+1] = row_b
+        j += 1
+    
+    # Set small values to zero for numerical stability
+    for k in range(n):
+        for f in range(n):
+            if abs(tran_mat[k, f]) < 1e-10:
+                tran_mat[k, f] = 0.0
+    return tran_mat
+##----------------------------------------------##
 def main():
     """
     Main function to demonstrate matrix tridiagonalization and diagonalization.
