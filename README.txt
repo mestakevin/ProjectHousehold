@@ -19,10 +19,6 @@ The script is modular, ensuring each function serves a specific purpose, making 
 - **Householder_Gaussian.py**: Contains all functions and the main script logic.
 
 
-## Getting Started
-...
-
-
 ## License
 - This project is licensed under the MIT License.
 - Feel free to use and modify this script for educational or research purposes! 😊
